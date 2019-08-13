@@ -71,7 +71,7 @@ export default class Presentation extends React.Component{
 }
 
 const screen = Dimensions.get('screen')
-// console.log(screen)
+console.log(screen)
 const swipe_icon_percentange = 30; 
 const styles =StyleSheet.create({
     container:{

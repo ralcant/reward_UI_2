@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet,Image, Text, View, Animated } from 'react-native';
 import Presentation from "./components/Presentation.js"
 // import Swipeable from 'react-native-swipeable';
+import {LinearGradient} from 'expo-linear-gradient'
 
 
 //IN CASE "expo start" does not connect with the correct IP address of the computer
@@ -43,12 +44,17 @@ export default class App extends React.Component {
   }
   render(){
     return (
-      <View style={styles.container}>
-        <Presentation
-        values ={this.state}
-        updateAttribute={this.updateAttribute}
-        />
-      </View>
+      // <View style={styles.container}>
+        <LinearGradient
+        colors={["#453a94","#f43b47"]}
+        style={styles.container}
+        >
+          <Presentation
+          values ={this.state}
+          updateAttribute={this.updateAttribute}
+          />
+        </LinearGradient>
+      // </View>
     );
   }
 }
@@ -56,6 +62,6 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FF6865',
+    // backgroundColor: '#FF6865',
   },
 });

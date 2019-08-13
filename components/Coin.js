@@ -14,9 +14,9 @@ export default class Coin extends React.Component{
         }
         this.animateTo(0, this.props.value, this.state.width_bar);
         this.pan = new Animated.ValueXY()
-        // this.hanldePanResponder()
-    // }
-    // hanldePanResponder = ()=>{
+        this.hanldePanResponder()
+    }
+    hanldePanResponder = ()=>{
         this._val = { x:0, y:0}
         this.pan.addListener((value) => this._val = value)
         this.panResponder = PanResponder.create({
@@ -45,6 +45,8 @@ export default class Coin extends React.Component{
                 // this.props.decreaseWidth(gesture.dx)
 
                 //only if the gesture is to the rigth, decrease the width of the bar
+                Animated.event([null, {dx: this.pan.x, dy: this.pan.y}])(e, gesture);
+
                 if (gesture.dx >0){
                     this.props.decreaseWidth(gesture.dx)
                     this.props.visibleSwipe(false) //if it's going to the right, it won't show it
@@ -55,7 +57,6 @@ export default class Coin extends React.Component{
                 //     this.props.decreaseWidth(gesture.dx)
                 // }
 
-                Animated.event([null, {dx: this.pan.x, dy: this.pan.y}])(e, gesture);
             
             },
             onPanResponderRelease: (e, gesture) => {
@@ -106,6 +107,10 @@ export default class Coin extends React.Component{
             toValue: value,
             duration: 1000,
         }).start()
+    }
+    componentDidMount(){
+        // this.props.decreaseWidth(0)
+
     }
     render(){
         const width_bar ={

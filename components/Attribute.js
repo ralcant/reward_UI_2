@@ -3,17 +3,20 @@ import { StyleSheet, Text, View, Animated, Dimensions, Easing } from 'react-nati
 import Coin from './Coin.js'
 // import Swipeable from 'react-native-swipeable';
 import images from "../assets/images.js"
+import CurvedRectangle from './CurvedRectangle.js'
+import {LinearGradient} from 'expo-linear-gradient'
 
 export default class Attribute extends React.Component{
     constructor(props){
         super(props);
         this.state={
             width_bar: new Animated.Value(0),
-            initial: props.value 
+            initial: props.value,
         }
-        this.type = this.props.info.type;  //"energy", "mood" or "curiosity"      
-
+        this.type = this.props.info.type;  //"energy", "mood" or "curiosity"   
         this.animateTo(0, this.props.value, this.state.width_bar);
+
+
     }
     componentDidUpdate = ()=>{
         if (this.props.value !== this.state.initial){
@@ -21,6 +24,9 @@ export default class Attribute extends React.Component{
             this.animateTo(0, this.props.value, this.state.width_bar)
         }
     }
+    // shouldComponentUpdate(){
+    //     // if this.state.width_
+    // }
     animateTo = (delay, value, animated) =>{
         // this.type = this.props.info.type;        
 
@@ -29,8 +35,13 @@ export default class Attribute extends React.Component{
             toValue: value,
             duration: 1000,
         }).start( ()=>{
-            console.log(`this.state.width is ${this.state.width_bar instanceof Animated.Value} Animated.Value`)
+            console.log(`this.state.width is ${this.state.width_bar._value}`)
         })
+    }
+    componentDidMount(){
+        console.log(`[ComponentDidMount in Attribute.js] this.state.width is ${this.state.width_bar._value}`)
+        // this.animateTo(0, this.props.value, this.state.width_bar);
+
     }
 
     decreaseWidth = (decrease)=>{
@@ -64,7 +75,9 @@ export default class Attribute extends React.Component{
     }
     colorSelector = (value)=>{
         if (0 <= value && value < 4 ){
-            return "#DA291CFF" 
+            return "#ff3641"
+
+            // return "#DA291CFF" 
         }
         if (4 <= value && value < 7){
             return "#FF4500"
@@ -77,7 +90,7 @@ export default class Attribute extends React.Component{
         }
     }
     render(){
-        console.log(`[render Attribute.js]: this.state.width is ${this.state.width_bar instanceof Animated.Value} Animated.Value`)
+        // console.log(`[render Attribute.js]: this.state.width is ${this.state.width_bar instanceof Animated.Value} Animated.Value`)
         let table_color = this.colorSelector(this.props.info.label)
         const widthStyle={
             backgroundColor: table_color,
@@ -87,7 +100,6 @@ export default class Attribute extends React.Component{
             // borderBottomRightRadius: 4,
             // flex:1,
         }
-        // console.log(this.state.width_bar)
         const text_width ={ //USE IT IF YOU WANT TO MOVE THE TEXT BELOW THE COIN (don't forget to disable rigth:0 from styles.text)
             //should make it a fixed distance from the end of the bar?
             right: this.state.width_bar,
@@ -98,12 +110,18 @@ export default class Attribute extends React.Component{
 
         let {label} = this.props.info;
         let text_image= images[this.type][label].text;
+
         return(
             <View style={styles.attribute_container}>
-                <Animated.Image
+                {/* <Animated.View>
+                    <CurvedRectangle info={{width: this.state.width_bar}} style={[styles.table]} />
+                </Animated.View> */}
+                <CurvedRectangle info={{width: this.state.width_bar, color: table_color}}/>
+
+                {/* <Animated.Image
                     source={table_image}
                     style={[styles.table, widthStyle]}
-                />  
+                />   */}
                 <Coin
                     image_source={image_source}
                     value={this.props.value}
@@ -135,16 +153,16 @@ const styles= StyleSheet.create({
         // borderColor:"pink",
         // borderWidth:10,
     },
-    table:{
-        position: "absolute",
-        right:0,
-        height:screen.height*radio_bar,
-        // bottom: 0,
-        // flex:1,
-        // borderColor: "blue",
-        // borderWidth:10,
-        // flex:0.5,
-    },
+    // table:{
+    //     position: "absolute",
+    //     right:0,
+    //     height:screen.height*radio_bar,
+    //     // bottom: 0,
+    //     // flex:1,
+    //     borderColor: "blue",
+    //     borderWidth:10,
+    //     // flex:0.5,
+    // },
     text:{
         position: "absolute",
         width: screen.height*(1/3-radio_bar)/2*3,
