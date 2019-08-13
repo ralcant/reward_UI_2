@@ -1,6 +1,7 @@
 import React from 'react'
 import {Animated, Text,Image, Easing, StyleSheet, Dimensions, PanResponder, TouchableHighlight} from 'react-native'
 // import Swipeable from 'react-native-swipeable';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 
 const {width} = Dimensions.get('window')
@@ -137,14 +138,14 @@ export default class Coin extends React.Component{
 }
 
 //HAVE TO BE IN SYNC WITH ATTRIBUTE.JS
-const screen = Dimensions.get('screen')
+// const screen = Dimensions.get('screen')
 const radio_bar = 1/5;
 const increasing_scale= 1.25
 
 const styles= StyleSheet.create({
     coin:{
-        width: screen.height*radio_bar/increasing_scale, //so that when the coin is bigger it's the same width as 
-        height:screen.height*radio_bar/increasing_scale,
+        width: hp(100)*radio_bar/increasing_scale, //so that when the coin is bigger it's the same width as 
+        height:hp(100)*radio_bar/increasing_scale,
         position: "absolute",
 
         // borderColor: "black",

@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View,Image, Animated, Dimensions, ImageBackground } from 'react-native';
 import Attribute from "./Attribute.js"
 import floatConversion from './floatConversion.js'
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 
 export default class Presentation extends React.Component{
@@ -27,9 +28,9 @@ export default class Presentation extends React.Component{
         let curiosity_integer_level= floatConversion(curiosity);
 
         //bear in mind the integer_levels are integers from 0 to 10.
-        let energy_bar_width = energy_integer_level* screen.width/15;
-        let mood_bar_width = mood_integer_level* screen.width/15;
-        let curiosity_bar_width = curiosity_integer_level* screen.width/15;
+        let energy_bar_width = energy_integer_level* wp(100/15);
+        let mood_bar_width = mood_integer_level* wp(100/15);
+        let curiosity_bar_width = curiosity_integer_level* wp(100/15);
 
         let swipe_image = require('../assets/img/test_swipe_3.gif')
         return(
@@ -70,8 +71,9 @@ export default class Presentation extends React.Component{
     }
 }
 
-const screen = Dimensions.get('screen')
-console.log(screen)
+// const screen = Dimensions.get('screen')
+// console.log(screen)
+console.log(`(width, height) is ${wp(100)}, ${hp(100)}`)
 const swipe_icon_percentange = 30; 
 const styles =StyleSheet.create({
     container:{

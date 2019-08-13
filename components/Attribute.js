@@ -4,7 +4,7 @@ import Coin from './Coin.js'
 // import Swipeable from 'react-native-swipeable';
 import images from "../assets/images.js"
 import CurvedRectangle from './CurvedRectangle.js'
-import {LinearGradient} from 'expo-linear-gradient'
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 export default class Attribute extends React.Component{
     constructor(props){
@@ -141,7 +141,7 @@ export default class Attribute extends React.Component{
     }
 }
 
-const screen = Dimensions.get('screen')
+// const screen = Dimensions.get('screen')
 const radio_bar = 1/5;
 
 const styles= StyleSheet.create({
@@ -165,8 +165,8 @@ const styles= StyleSheet.create({
     // },
     text:{
         position: "absolute",
-        width: screen.height*(1/3-radio_bar)/2*3,
-        height:screen.height*(1/3-radio_bar)/2,
+        width: hp(100)*(1/3-radio_bar)/2*3,
+        height:hp(100)*(1/3-radio_bar)/2,
         right:0,
         bottom: 0
     },

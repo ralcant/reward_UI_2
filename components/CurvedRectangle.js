@@ -1,6 +1,7 @@
 import React from 'react'
 import {View, Text, StyleSheet,Dimensions, Animated} from 'react-native'
-// import SingleCurvedRectangle from './SingleCurvedRectangle.js'
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+
 
 export default class CurvedRectangle extends React.Component{
     constructor(props){
@@ -30,9 +31,9 @@ export default class CurvedRectangle extends React.Component{
         // console.log(`ajsgvdbajhsbhjbasdbs new_width is ${new_width._value}`)
         let {width, color} = this.props.info
         let number_divisions = 10//this.divisions(width._value)
-        let individual_width = width._value/number_divisions;
+        // let individual_width = width._value/number_divisions;
         // let borderRadius = Math.sqrt(individual_width*individual_width+screen.height*radio_bar*screen.height*radio_bar)/2
-        let borderRadius = screen.height*radio_bar/2;
+        let borderRadius = hp(100)*radio_bar/2;
         // let borderRadius =  width._value/2
         let general_style = {
             backgroundColor: color,
@@ -40,7 +41,7 @@ export default class CurvedRectangle extends React.Component{
             // borderTopRightRadius: borderRadius,
             // borderBottomRightRadius: borderRadius,
         } 
-        console.log('Number of divisions here is !:',number_divisions)
+        // console.log('Number of divisions here is !:',number_divisions)
         return(
             <Animated.View style={[styles.container, {width: width}]}>
                 {this.getAnimatedViews(number_divisions, general_style)}
@@ -48,7 +49,6 @@ export default class CurvedRectangle extends React.Component{
         )
     }
 }
-const screen = Dimensions.get('screen')
 const radio_bar = 1/5;
 
 const styles= StyleSheet.create({
@@ -57,7 +57,7 @@ const styles= StyleSheet.create({
         flexDirection: "row",
         position: "absolute",
         right:0,
-        height:screen.height*radio_bar,
+        height:hp(100)*radio_bar,
         // borderColor: "blue",
         // borderWidth:10,
         // flex:0.5,
