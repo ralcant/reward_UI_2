@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet,Image, Text, View, Animated } from 'react-native';
 import Presentation from "./components/Presentation.js"
-import Swipeable from 'react-native-swipeable';
+// import Swipeable from 'react-native-swipeable';
 
 
 //IN CASE "expo start" does not connect with the correct IP address of the computer

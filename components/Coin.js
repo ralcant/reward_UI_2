@@ -1,6 +1,6 @@
 import React from 'react'
 import {Animated, Text,Image, Easing, StyleSheet, Dimensions, PanResponder, TouchableHighlight} from 'react-native'
-import Swipeable from 'react-native-swipeable';
+// import Swipeable from 'react-native-swipeable';
 
 
 const {width} = Dimensions.get('window')
@@ -37,7 +37,8 @@ export default class Coin extends React.Component{
                     y: this._val.y
                 });
                 this.pan.setValue({x: 0, y: 0});
-                this.state.scale.setValue(1.25);
+                this.state.scale.setValue(increasing_scale);
+                // this.props.visibleSwipe(false)
 
             },
             onPanResponderMove: (e, gesture) =>{
@@ -46,6 +47,9 @@ export default class Coin extends React.Component{
                 //only if the gesture is to the rigth, decrease the width of the bar
                 if (gesture.dx >0){
                     this.props.decreaseWidth(gesture.dx)
+                    this.props.visibleSwipe(false) //if it's going to the right, it won't show it
+                }else{
+                    this.props.visibleSwipe(true) //if it's going to the left (or same place) it will show it 
                 }
                 // else{
                 //     this.props.decreaseWidth(gesture.dx)
@@ -59,6 +63,7 @@ export default class Coin extends React.Component{
                 
 
                 this.props.restartWidth()
+                // this.props.visibleSwipe(true)
                 console.log(gesture)
 
                 if (gesture.dx < 0){
@@ -109,8 +114,6 @@ export default class Coin extends React.Component{
             margin:10,
             // right: this.state.width_coin,
         }
-        let leftContent= <Text>Pull to activate</Text>;
-        let rightContent = <Text>YAYYY im going to the righttttt</Text>
         // const transform = [{
         //     translateX: this.pan.x
         // }]
@@ -125,38 +128,18 @@ export default class Coin extends React.Component{
   
         />
         )
-
-        return(
-            <Swipeable 
-            leftContent={leftContent} 
-            onSwipeRelease = {console.log("it's moving!")}
-            // rightContent={rightContent} 
-            // onRef={console.log("yayy")}
-            // onRightActionRelease ={this.rightRelease()}
-            onLeftActionRelease ={this.leftRelease()}
-            >
-                <Animated.Image 
-                    style={[width_bar, styles.coin,transform]}
-                    source= {this.props.image_source}    
-                />
-
-                {/* <Image  
-                    style={[styles.coin]}
-                    source= {this.props.image_source}    
-                /> */}
-                {/* <Text>My swipeable content</Text> */}
-                    
-            </Swipeable>
-        )
     }
 }
 
+//HAVE TO BE IN SYNC WITH ATTRIBUTE.JS
+const screen = Dimensions.get('screen')
+const radio_bar = 1/5;
+const increasing_scale= 1.25
+
 const styles= StyleSheet.create({
     coin:{
-        // flex:1,
-        width: 120,
-        height: 120,
-        // right:0,
+        width: screen.height*radio_bar/increasing_scale, //so that when the coin is bigger it's the same width as 
+        height:screen.height*radio_bar/increasing_scale,
         position: "absolute",
 
         // borderColor: "black",

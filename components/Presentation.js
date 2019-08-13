@@ -1,28 +1,21 @@
 import React from 'react';
-import { StyleSheet, Text, View, Animated, Dimensions } from 'react-native';
+import { StyleSheet, Text, View,Image, Animated, Dimensions, ImageBackground } from 'react-native';
 import Attribute from "./Attribute.js"
-import { Asset } from 'expo-asset';
 import floatConversion from './floatConversion.js'
 
 
-const window = Dimensions.get('window');
-console.log(window)
 export default class Presentation extends React.Component{
     constructor(props){
         super(props);
+        this.state={
+            showSwipe: true,
+        }
     }
-    colorSelector = (value)=>{
-        if (0 <= value && value < 4 ){
-            return "#DA291CFF" 
-        }
-        if (4 <= value && value < 7){
-            return "#FF4500"
-        }
-        if (7 <= value && value <= 10){
-            return "#53A567FF"
-        } 
-        else{
-            console.log("[color selector in Presentation.js] This shouldn't happen. Remember, energy, mood and curiosity should be in the interval [0,10]")
+    visibleSwipe = (visible) =>{
+        if (this.state.showSwipe !== visible){
+            this.setState({
+                showSwipe: visible,
+            })
         }
     }
     render(){
@@ -33,56 +26,76 @@ export default class Presentation extends React.Component{
         let mood_integer_level= floatConversion(mood);
         let curiosity_integer_level= floatConversion(curiosity);
 
-        let energy_bar_width = energy_integer_level* window.width/15;
-        let mood_bar_width = mood_integer_level* window.width/15;
-        let curiosity_bar_width = curiosity_integer_level* window.width/15;
+        //bear in mind the integer_levels are integers from 0 to 10.
+        let energy_bar_width = energy_integer_level* screen.width/15;
+        let mood_bar_width = mood_integer_level* screen.width/15;
+        let curiosity_bar_width = curiosity_integer_level* screen.width/15;
 
+        let swipe_image = require('../assets/img/test_swipe_3.gif')
         return(
+                <View style={styles.container}>
+                    {
+                    this.state.showSwipe &&
+                    <Image source={swipe_image} style={styles.swipe_icon}/>
+                    }
 
-            <View style={styles.container}>
-                <Attribute
-                value={energy_bar_width}
-                info={{type: "energy", label: energy_integer_level}}
-                color={this.colorSelector(energy)}
-                updateAttribute={this.props.updateAttribute}
+                    <Attribute
+                    value={energy_bar_width}
+                    info={{type: "energy", label: energy_integer_level}}
+                    // color={this.colorSelector(energy)}
+                    updateAttribute={this.props.updateAttribute}
+                    visibleSwipe={this.visibleSwipe}
+                    
+                    />
+                    <Attribute
+                    value={mood_bar_width} 
+                    info={{type: "mood", label: mood_integer_level}}
+                    // color={this.colorSelector(mood)}
+                    updateAttribute={this.props.updateAttribute}
+                    visibleSwipe={this.visibleSwipe}
+
+                    />
+                    <Attribute
+                    value={curiosity_bar_width}
+                    info={{type: "curiosity", label: curiosity_integer_level}} 
+                    // color={this.colorSelector(curiosity)}   
+                    updateAttribute={this.props.updateAttribute}
+                    visibleSwipe={this.visibleSwipe}
+
+                    />
+                </View>
                 
-                />
-                <Attribute
-                value={mood_bar_width} 
-                info={{type: "mood", label: mood_integer_level}}
-                color={this.colorSelector(mood)}
-                updateAttribute={this.props.updateAttribute}
 
-                />
-                <Attribute
-                value={curiosity_bar_width}
-                info={{type: "curiosity", label: curiosity_integer_level}} 
-                color={this.colorSelector(curiosity)}   
-                updateAttribute={this.props.updateAttribute}
-
-                />
-            </View>
         )
     }
 }
+
+const screen = Dimensions.get('screen')
+// console.log(screen)
+const swipe_icon_percentange = 30; 
 const styles =StyleSheet.create({
     container:{
         flex:1,
     },
-    energy:{
-        flex:1,
-        // position: "absolute",
+    swipe_icon:{ //this makes the icon be on the left center
+        position: "absolute", //necessary so that it does not conflict with the other images
 
-    },
-    mood:{
-        flex:1,
-        // position: "absolute",
+        width: `${swipe_icon_percentange}%`,
+        height:`${swipe_icon_percentange}%`,
+        top: `${50-swipe_icon_percentange/2}%`, 
+        // alignSelf: "center",
+        // justifyContent: "center",
+        // flexDirection: "row",       
+        // bottom:'50%',
 
-    },
-    curiosity:{
-        flex:1,
-        // position: "absolute",
+        //for testing purposes
+        // borderWidth: 10,
+        // borderColor: "blue",
+        // overlayColor: "blue"
 
-    },
+        // left:0,
+        // justifyContent:"center",
+        // alignSelf:"center",
+    }
 
 })

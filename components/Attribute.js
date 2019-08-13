@@ -1,7 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, View, Animated, Easing } from 'react-native';
+import { StyleSheet, Text, View, Animated, Dimensions, Easing } from 'react-native';
 import Coin from './Coin.js'
-import Swipeable from 'react-native-swipeable';
+// import Swipeable from 'react-native-swipeable';
 import images from "../assets/images.js"
 
 export default class Attribute extends React.Component{
@@ -11,7 +11,7 @@ export default class Attribute extends React.Component{
             width_bar: new Animated.Value(0),
             initial: props.value 
         }
-        this.type = this.props.info.type;        
+        this.type = this.props.info.type;  //"energy", "mood" or "curiosity"      
 
         this.animateTo(0, this.props.value, this.state.width_bar);
     }
@@ -32,12 +32,6 @@ export default class Attribute extends React.Component{
             console.log(`this.state.width is ${this.state.width_bar instanceof Animated.Value} Animated.Value`)
         })
     }
-    // rightRelease =()=>{
-    //     console.log("moved to the right! ")
-    // }
-    // leftRelease= ()=>{
-    //     console.log("moved to the left!")
-    // }
 
     decreaseWidth = (decrease)=>{
         // let current_width = this.state.width_bar;
@@ -52,20 +46,7 @@ export default class Attribute extends React.Component{
             return {
                 width_bar: result,
             }
-        }, () =>{
-            console.log(`After setting the state, this.state.width_bar is ${this.state.width_bar instanceof Animated.Value} instance of Animated.Value`)
-
         })
-
-            
-            
-        //     {
-        //     width_bar: Animated.subtract(current_width, decreaseAnimated),
-        //     // prevWidth: current_width,
-        // }, () =>{
-        //     console.log("sfssadsssssssssss",this.state.width_bar instanceof Animated.Value)
-        // })
-
     }
     restartWidth = ()=>{
         // console.log(this.state.width_bar instanceof Animated.Value)
@@ -73,9 +54,7 @@ export default class Attribute extends React.Component{
             toValue: this.props.value,
             duration:1000,
             easing: Easing.bounce,
-        }).start(()=>{
-
-        });
+        }).start();
         // Animated.spring(this.state.width_bar,{
         //     friction:3,
         //     toValue: this.props.value,
@@ -83,34 +62,46 @@ export default class Attribute extends React.Component{
         // }).start();
         // this.animateTo(0,0, this.state.width_bar)
     }
+    colorSelector = (value)=>{
+        if (0 <= value && value < 4 ){
+            return "#DA291CFF" 
+        }
+        if (4 <= value && value < 7){
+            return "#FF4500"
+        }
+        if (7 <= value && value <= 10){
+            return "#53A567FF"
+        } 
+        else{
+            console.log("[color selector in Attribute.js] This shouldn't happen. Remember, energy, mood and curiosity should be in the interval [0,10]")
+        }
+    }
     render(){
         console.log(`[render Attribute.js]: this.state.width is ${this.state.width_bar instanceof Animated.Value} Animated.Value`)
+        let table_color = this.colorSelector(this.props.info.label)
         const widthStyle={
-            backgroundColor: this.props.color,
+            backgroundColor: table_color,
             width: this.state.width_bar,
-            // postition: ""
             // right:0,
-            // postition: "absolute",
             // borderTopLeftRadius: 4,
             // borderBottomRightRadius: 4,
             // flex:1,
         }
         // console.log(this.state.width_bar)
-        const width ={
+        const text_width ={ //USE IT IF YOU WANT TO MOVE THE TEXT BELOW THE COIN (don't forget to disable rigth:0 from styles.text)
             //should make it a fixed distance from the end of the bar?
             right: this.state.width_bar,
             marginRight:10,
         }
-        // const width_text
-
-        //TODO: Calculate this images with respect to the values of the state!
+        let table_image = require('../assets/img/test.jpg')
         let image_source= require('../assets/jibocoin.png');
-        // let label = 1
+
         let {label} = this.props.info;
         let text_image= images[this.type][label].text;
         return(
             <View style={styles.attribute_container}>
-                <Animated.View 
+                <Animated.Image
+                    source={table_image}
                     style={[styles.table, widthStyle]}
                 />  
                 <Coin
@@ -120,9 +111,10 @@ export default class Attribute extends React.Component{
                     restartWidth= {this.restartWidth}
                     updateAttribute={this.props.updateAttribute}
                     type={this.type}
+                    visibleSwipe={this.props.visibleSwipe}
                 />
                 <Animated.Image
-                    style={[    styles.text]}
+                    style={[styles.text]}
                     source={text_image}
                 />
             </View>
@@ -130,12 +122,15 @@ export default class Attribute extends React.Component{
         )
     }
 }
+
+const screen = Dimensions.get('screen')
+const radio_bar = 1/5;
+
 const styles= StyleSheet.create({
     attribute_container:{
         flex:1,
         flexDirection:"row",
         alignItems: "center",
-
         //for testing purposes
         // borderColor:"pink",
         // borderWidth:10,
@@ -143,7 +138,7 @@ const styles= StyleSheet.create({
     table:{
         position: "absolute",
         right:0,
-        height:150,
+        height:screen.height*radio_bar,
         // bottom: 0,
         // flex:1,
         // borderColor: "blue",
@@ -151,10 +146,10 @@ const styles= StyleSheet.create({
         // flex:0.5,
     },
     text:{
-        width: 150,
-        height:50,
         position: "absolute",
+        width: screen.height*(1/3-radio_bar)/2*3,
+        height:screen.height*(1/3-radio_bar)/2,
         right:0,
-        bottom: -5,
+        bottom: 0
     },
 })
