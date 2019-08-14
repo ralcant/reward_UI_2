@@ -5,32 +5,29 @@ import Coin from './Coin.js'
 import images from "../assets/images.js"
 import CurvedRectangle from './CurvedRectangle.js'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import sleep from './sleep.js'
 
 export default class Attribute extends React.Component{
     constructor(props){
         super(props);
+        this.initial = props.value;
         this.state={
             width_bar: new Animated.Value(0),
-            initial: props.value,
+            opacity: 0.5,
         }
-        this.type = this.props.info.type;  //"energy", "mood" or "curiosity"   
+        this.type = this.props.info.type;  //"energy", "mood" or "curiosity"
         this.animateTo(0, this.props.value, this.state.width_bar);
 
 
     }
     componentDidUpdate = ()=>{
-        if (this.props.value !== this.state.initial){
-            //so that thee width_bar is on sync with
+        if (this.props.value !== this.initial){
+            //so that this.state.width_bar is always on sync with this.props.value
             this.animateTo(0, this.props.value, this.state.width_bar)
         }
     }
-    // shouldComponentUpdate(){
-    //     // if this.state.width_
-    // }
     animateTo = (delay, value, animated) =>{
-        // this.type = this.props.info.type;        
-
-        console.log("this is running")
+        // this.type = this.props.info.type;
         Animated.timing(animated,{
             toValue: value,
             duration: 1000,
@@ -40,8 +37,10 @@ export default class Attribute extends React.Component{
     }
     componentDidMount(){
         console.log(`[ComponentDidMount in Attribute.js] this.state.width is ${this.state.width_bar._value}`)
-        // this.animateTo(0, this.props.value, this.state.width_bar);
-
+        this.animateTo(0, this.props.value, this.state.width_bar);
+        if (this.state.width_bar._value ===0){
+            console.log("IT'S O :((((((((((((((((((((((((((((((")
+        }
     }
 
     decreaseWidth = (decrease)=>{
@@ -52,8 +51,6 @@ export default class Attribute extends React.Component{
         this.setState((prevState) => {
             //result needs to be an Animated.Value object
             let result = new Animated.Value(this.props.value-decrease);
-            // let result = new Animated.Value(Animated.subtract(prevState.width_bar, decreaseAnimated))
-            // console.log(`However, result is ${result instanceof Animated.Value}  `)            
             return {
                 width_bar: result,
             }
@@ -61,9 +58,10 @@ export default class Attribute extends React.Component{
     }
     restartWidth = ()=>{
         // console.log(this.state.width_bar instanceof Animated.Value)
+        // this.decreaseWidth(0)
         Animated.timing(this.state.width_bar,{
             toValue: this.props.value,
-            duration:1000,
+            duration:1500,
             easing: Easing.bounce,
         }).start();
         // Animated.spring(this.state.width_bar,{
@@ -77,21 +75,27 @@ export default class Attribute extends React.Component{
         if (0 <= value && value < 4 ){
             return "#ff3641"
 
-            // return "#DA291CFF" 
+            // return "#DA291CFF"
         }
         if (4 <= value && value < 7){
             return "#FF4500"
         }
         if (7 <= value && value <= 10){
             return "#53A567FF"
-        } 
+        }
         else{
             console.log("[color selector in Attribute.js] This shouldn't happen. Remember, energy, mood and curiosity should be in the interval [0,10]")
         }
     }
+    // changeOpacity = (value)=>{
+    //     this.setState({
+    //         opacity: value
+    //     })
+    // }
     render(){
+
         // console.log(`[render Attribute.js]: this.state.width is ${this.state.width_bar instanceof Animated.Value} Animated.Value`)
-        let table_color = this.colorSelector(this.props.info.label)
+        let table_color = '#ffcd03' //this.colorSelector(this.props.info.label)
         const widthStyle={
             backgroundColor: table_color,
             width: this.state.width_bar,
@@ -99,6 +103,9 @@ export default class Attribute extends React.Component{
             // borderTopLeftRadius: 4,
             // borderBottomRightRadius: 4,
             // flex:1,
+        }
+        let opacity_style = {
+            opacity: this.props.is_visible? 1: 0//this.state.opacity,
         }
         const text_width ={ //USE IT IF YOU WANT TO MOVE THE TEXT BELOW THE COIN (don't forget to disable rigth:0 from styles.text)
             //should make it a fixed distance from the end of the bar?
@@ -110,19 +117,23 @@ export default class Attribute extends React.Component{
 
         let {label} = this.props.info;
         let text_image= images[this.type][label].text;
+        let opacity_style_2={
+            opacity: this.props.is_visible? 1:0.5
+        }
 
         return(
-            <View style={styles.attribute_container}>
+            <View style={[opacity_style_2, styles.attribute_container]}>
                 {/* <Animated.View>
                     <CurvedRectangle info={{width: this.state.width_bar}} style={[styles.table]} />
                 </Animated.View> */}
-                <CurvedRectangle info={{width: this.state.width_bar, color: table_color}}/>
+                <CurvedRectangle info={{width: this.state.width_bar, color: table_color, label: label}}/>
 
                 {/* <Animated.Image
                     source={table_image}
                     style={[styles.table, widthStyle]}
                 />   */}
                 <Coin
+                    style={opacity_style}
                     image_source={image_source}
                     value={this.props.value}
                     decreaseWidth={this.decreaseWidth}
@@ -130,6 +141,9 @@ export default class Attribute extends React.Component{
                     updateAttribute={this.props.updateAttribute}
                     type={this.type}
                     visibleSwipe={this.props.visibleSwipe}
+                    animateTo={this.animateTo}
+                    changeOpacity={this.props.changeOpacity}
+                    restartOpacity={this.props.restartOpacity}
                 />
                 <Animated.Image
                     style={[styles.text]}

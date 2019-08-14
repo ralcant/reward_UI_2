@@ -3,6 +3,8 @@ import { StyleSheet,Image, Text, View, Animated } from 'react-native';
 import Presentation from "./components/Presentation.js"
 // import Swipeable from 'react-native-swipeable';
 import {LinearGradient} from 'expo-linear-gradient'
+// import {PanGestureHandler} from 'react-native-gesture-handler'  
+// import {kjcnjdn} from 'expo'
 
 
 //IN CASE "expo start" does not connect with the correct IP address of the computer
@@ -12,9 +14,9 @@ export default class App extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      energy:3.5,
+      energy:1.5,
       mood: 6.1,
-      curiosity: 8,
+      curiosity: 9,
 
       is_first: false,
     }
@@ -45,15 +47,17 @@ export default class App extends React.Component {
   render(){
     return (
       // <View style={styles.container}>
-        <LinearGradient
-        colors={["#453a94","#f43b47"]}
-        style={styles.container}
-        >
-          <Presentation
-          values ={this.state}
-          updateAttribute={this.updateAttribute}
-          />
-        </LinearGradient>
+        // <PanGestureHandler>
+          <LinearGradient
+          colors={["#453a94","#f43b47"]}
+          style={styles.container}
+          >
+            <Presentation
+            values ={this.state}
+            updateAttribute={this.updateAttribute}
+            />
+          </LinearGradient>
+        // </PanGestureHandler>
       // </View>
     );
   }
