@@ -2,7 +2,7 @@ import React from 'react'
 import {Animated, Text,Image, Easing, StyleSheet, Dimensions, PanResponder, TouchableHighlight} from 'react-native'
 // import Swipeable from 'react-native-swipeable';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
-
+import {sleep} from './sleep.js'
 
 const {width} = Dimensions.get('window')
 // console.log(width)
@@ -135,9 +135,11 @@ export default class Coin extends React.Component{
             toValue:{x: -width, y:0},
             // duration:1000,
             // easing: Easing.bounce,
-            }).start(() =>{
+            }).start(async() =>{
                 this.props.updateAttribute(this.props.type)
-                this.props.removeItem()
+                //maybe get out of the app instead of just deleting?
+                await sleep(2000)
+                this.props.removeItem() //sets visibility to false, and then the the three being false makes eveyrhting dissapear
             })
         }
     }
