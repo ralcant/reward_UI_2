@@ -144,6 +144,7 @@ export default class Attribute extends React.Component{
                     animateTo={this.animateTo}
                     changeOpacity={this.props.changeOpacity}
                     restartOpacity={this.props.restartOpacity}
+                    removeItem={this.props.removeItem}
                 />
                 <Animated.Image
                     style={[styles.text]}

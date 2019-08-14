@@ -64,6 +64,13 @@ export default class Presentation extends React.Component{
 
         })
     }
+    removeItem = () =>{
+        this.setState({
+            energy_visible: false,
+            mood_visible: false,
+            curiosity_visible: false
+        })
+    }
     render(){
         let {energy, mood, curiosity} = this.props.values;
 
@@ -95,6 +102,7 @@ export default class Presentation extends React.Component{
                         info={{type: "energy", label: energy_integer_level}}
                         // color={this.colorSelector(energy)}
                         updateAttribute={this.props.updateAttribute}
+                        removeItem={this.removeItem}
                         visibleSwipe={this.visibleSwipe}
                         is_visible ={this.state.energy_visible}
                         changeOpacity={this.changeOpacity}
@@ -111,6 +119,8 @@ export default class Presentation extends React.Component{
                         changeOpacity={this.changeOpacity}
                         restartOpacity={this.restartOpacity}
                         style_condition={style_condition}
+                        removeItem={this.removeItem}
+
                         />
                         <Attribute
                         value={curiosity_bar_width}
@@ -122,6 +132,8 @@ export default class Presentation extends React.Component{
                         changeOpacity={this.changeOpacity}
                         restartOpacity={this.restartOpacity}
                         style_condition={style_condition}
+                        removeItem={this.removeItem}
+
 
                         />
                     </View>

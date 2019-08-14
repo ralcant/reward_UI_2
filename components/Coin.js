@@ -137,6 +137,7 @@ export default class Coin extends React.Component{
             // easing: Easing.bounce,
             }).start(() =>{
                 this.props.updateAttribute(this.props.type)
+                this.props.removeItem()
             })
         }
     }
@@ -163,7 +164,14 @@ export default class Coin extends React.Component{
         // console.log(transform)
         return(
             <Animated.Image 
-            style={[this.props.style,width_bar, {transform:[{translateX: this.pan.x},{scale:this.state.scale}]},styles.coin]}
+            style={[
+                this.props.style,width_bar,
+                {transform:[
+                    {translateX: this.pan.x},
+                    {scale:this.state.scale}
+                ]},
+                styles.coin
+            ]}
             source= {this.props.image_source}                          
             {...this.panResponder.panHandlers}
   
