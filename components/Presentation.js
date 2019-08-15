@@ -3,6 +3,7 @@ import { StyleSheet, Text, View,Image, Animated, Dimensions, ImageBackground } f
 import Attribute from "./Attribute.js"
 import floatConversion from './floatConversion.js'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+// import {Sounds} from '../assets/sounds.js'
 
 
 export default class Presentation extends React.Component{
@@ -14,6 +15,7 @@ export default class Presentation extends React.Component{
             mood_visible: true,
             curiosity_visible: true,
         }
+        this.changeOpacity= this.changeOpacity.bind(this)
     }
     visibleSwipe = (visible) =>{
         if (this.state.showSwipe !== visible){
@@ -22,7 +24,9 @@ export default class Presentation extends React.Component{
             })
         }
     }
-    changeOpacity= (type) =>{
+    async changeOpacity(type){
+        // await Sounds.name.source.playAsync()
+
         // state_type = `${type}_hidden`
         // console.log(state_type)
         // this.setState({

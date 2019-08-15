@@ -39,7 +39,7 @@ export default class Attribute extends React.Component{
         console.log(`[ComponentDidMount in Attribute.js] this.state.width is ${this.state.width_bar._value}`)
         this.animateTo(0, this.props.value, this.state.width_bar);
         if (this.state.width_bar._value ===0){
-            console.log("IT'S O :((((((((((((((((((((((((((((((")
+            // console.log("IT'S O :((((((((((((((((((((((((((((((")
         }
     }
 

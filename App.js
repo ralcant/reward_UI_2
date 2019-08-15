@@ -5,10 +5,21 @@ import Presentation from "./components/Presentation.js"
 import {LinearGradient} from 'expo-linear-gradient'
 // import {PanGestureHandler} from 'react-native-gesture-handler'  
 // import {kjcnjdn} from 'expo'
-
+// var Sound = require('react-native-sound'); //to make it work need to be on a bare app, meaning that you need tochange the native code (react-native link does not work! :( )
+                                              //if you created your app using expo init, then you are a "managed" app, not a "bare" app
+// import Sound from 'react-native-sound'
+// import {Sounds} from './assets/sounds.js'
+// import { Audio } from 'expo-av';
+// import {play_audio} from './assets/sounds.js'
 
 //IN CASE "expo start" does not connect with the correct IP address of the computer
 // export env REACT_NATIVE_PACKAGER_HOSTNAME=192.168.41.89
+import {
+  Player,
+  Recorder,
+  MediaStates
+} from '@react-native-community/audio-toolkit';
+
 
 export default class App extends React.Component {
   constructor(props){
@@ -20,9 +31,71 @@ export default class App extends React.Component {
 
       is_first: false,
     }
+    // this.play_audio= this.play_audio.bind(this)
+    // this.soundObject = new Audio.Sound() //
+  }
+  // async play_audio(path){
+  //   // console.log('PAAATH is',path)
+  //   // try{
+  //   //   const {sound: soundObject, status} = await Audio.Sound.createAsync(
+  //   //     path,
+  //   //     {shouldPlay: true}
+  //   //   )
+  //   // } catch(error){
+  //   //   console.log("SAAAAAAAAAAAAAAAAD", error)
+  //   // }
+
+  //   // soundObject.playAsync()
+  //   console.log("ahhhhhhhhhhhhhhh", typeof soundObject)
+  //   // console.log(typeof soundObject)
+  //   // soundObject.play()
+  //   try {
+  //     await this.soundObject.loadAsync(path);
+  //     // console.log(typeof soundObject)
+
+  //     await this.soundObject.playAsync();
+  //     // Your sound is playing!
+  //   } catch (error) {
+  //     // An error occurred!
+  //     console.log("nothing to play :(((((((((((((((((((((((((((((((((")
+  //   }
+  // }
+  async componentDidMount(){
+    // console.log(Object.getPrototypeOf(Sounds.name.source))
+    // console.log(require('./assets/sounds/test.wav'))
+    // Sounds.name.source.play_audio()
+    let song= require('./assets/sounds/test2.mp3')
+    let song2 = require('./assets/sounds/test.wav')
+    new Player('test.wav').play()
+    // play_audio(this.soundObject, require('./assets/sounds/test.wav'))
+
+    // play_audio(this.soundObject, song2 )
+
+    // play_audio(this.soundObject, )
+    // try{
+    //   const {sound: soundObject, status} = await Audio.Sound.createAsync(
+    //     require('./assets/sounds/test.wav'),
+    //     {shouldPlay: true}
+    //   )
+    // } catch(error){
+    //   console.log("SAAAAAAAAAAAAAAAAD", error)
+    // }
+    // const soundObject = new Audio.Sound();
+    // try {
+    //   // await soundObject.loadAsync(require('./assets/sounds/test2.mp3'));
+    //   await soundObject.loadAsync(require('./assets/sounds/test.wav'));
+
+    //   await soundObject.playAsync();
+    //   // Your sound is playing!
+    // } catch (error) {
+    //   // An error occurred!
+    //   console.log(error)
+    // }
+
   }
   updateAttribute = (type) =>{
     //TODO: Update it from the database!
+
     switch(type){
       case "energy":{
         this.setState({

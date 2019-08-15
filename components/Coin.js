@@ -3,8 +3,10 @@ import {Animated, Text,Image, Easing, StyleSheet, Dimensions, PanResponder, Touc
 // import Swipeable from 'react-native-swipeable';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import {sleep} from './sleep.js'
+import {Audio} from 'expo-av'
+import {play_audio} from '../assets/sounds.js'
 
-const {width} = Dimensions.get('window')
+// const {width} = Dimensions.get('window')
 // console.log(width)
 export default class Coin extends React.Component{
     constructor(props){
@@ -17,6 +19,7 @@ export default class Coin extends React.Component{
         this.props.animateTo(0, this.props.value, this.state.width_bar);
         this.pan = new Animated.ValueXY()
         this.handlePanResponder()
+        this.soundObject = new Audio.Sound()
     }
     handlePanResponder = ()=>{
         this._val = { x:0, y:0}
@@ -40,7 +43,7 @@ export default class Coin extends React.Component{
         })
     }
     handleShouldSetOnStart= (e, gesture)=>{
-        return this.state.is_responder // so that it cannot 
+        return this.state.is_responder // so that it cannot be 
         console.log("AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH")
         if (gesture.numberActiveTouches >=2){
             return false
@@ -66,6 +69,12 @@ export default class Coin extends React.Component{
         this.pan.setValue({x: 0, y: 0});
         this.state.scale.setValue(increasing_scale);
         this.props.changeOpacity(this.props.type)
+
+
+        // let song2 = require('../assets/sounds/test.wav')
+
+        // play_audio(this.soundObject, song2)
+
         // this.props.visibleSwipe(false)
     }
     handleOnResponderMove = (e, gesture) =>{
@@ -132,13 +141,13 @@ export default class Coin extends React.Component{
             Animated.timing(this.pan,{
             duration:1500,  //has to be the same time as the time it takes to restartWidth(), so that it seems more natural
             // delay:100
-            toValue:{x: -width, y:0},
+            toValue:{x: -wp(100), y:0},
             // duration:1000,
             // easing: Easing.bounce,
             }).start(async() =>{
                 this.props.updateAttribute(this.props.type)
                 //maybe get out of the app instead of just deleting?
-                await sleep(2000)
+                await sleep(2000) //so that the change of the type is visible
                 this.props.removeItem() //sets visibility to false, and then the the three being false makes eveyrhting dissapear
             })
         }
