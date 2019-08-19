@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet,Image, Text, View, Animated } from 'react-native';
 import Presentation from "./components/Presentation.js"
 // import Swipeable from 'react-native-swipeable';
-import {LinearGradient} from 'expo-linear-gradient'
+// import {LinearGradient} from 'expo-linear-gradient'
 // import {PanGestureHandler} from 'react-native-gesture-handler'  
 // import {kjcnjdn} from 'expo'
 // var Sound = require('react-native-sound'); //to make it work need to be on a bare app, meaning that you need tochange the native code (react-native link does not work! :( )
