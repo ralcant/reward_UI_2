@@ -3,7 +3,7 @@ import {Animated, Text,Image, Easing, StyleSheet, Dimensions, PanResponder, Touc
 // import Swipeable from 'react-native-swipeable';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import {sleep} from './sleep.js'
-import {Audio} from 'expo-av'
+// import {Audio} from 'expo-av'
 import {play_audio} from '../assets/sounds.js'
 
 // const {width} = Dimensions.get('window')
