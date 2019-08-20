@@ -35,7 +35,7 @@ export let sounds = {
         source: require('./sounds/test2.mp3')
     },
     "coin_picked":{
-        source: require('./sounds/test.wav')
+        source: require('./sounds/showing_coin.wav')
     },
     "coin_back_to_normal":{
         source: require('./sounds/coin_back_to_normal.mp3')
@@ -48,5 +48,8 @@ export let sounds = {
     },
     "intro":{
         source: require('./sounds/intro.mp3')
+    },
+    "showing_coin":{
+        source: require('./sounds/showing_coin.wav') //TODO: FIND A GOOD SOUND FOR THIS
     }
 }

@@ -5,7 +5,7 @@ import floatConversion from './floatConversion.js'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 // import {Sounds} from '../assets/sounds.js'
 // var Sound = require('react-native-sound');
-// import {playSound} from './sounds.js'
+import {play_sound} from '../assets/sounds.js'
 
 export default class Presentation extends React.Component{
     constructor(props){
@@ -70,18 +70,23 @@ export default class Presentation extends React.Component{
           if (!en_visible && !mo_visible && !cu_visible){
             //make Jibo talk, don't call this.setState until AFTER jibo finished talking  
             console.log("into first if")
+            play_sound("showing_coin")
             this.show_only("energy")
           } 
           if (en_visible && !mo_visible && !cu_visible){
             //make Jibo talk, don't call this.setState until AFTER jibo finished talking
             console.log("into second if!")
             await this.client.send_robot_tts_cmd("If you drag it to the ENERGY bucket, <es name=Emoji_Battery nonBlocking='true'/> my energy will increase. Also, <break size='0.7'/> <es name=excited_05 nonBlocking='true'/>I will be more awake and ready to play with you!"); 
+            play_sound("showing_coin")
+            
             this.show_only("mood")
           }
           if (!en_visible && mo_visible && !cu_visible){
             //make Jibo talk, don't call this.setState until AFTER jibo finished talking
             console.log("into third if")
             await this.client.send_robot_tts_cmd("On the other hand, if you drag it to the MOOD bucket, my mood will increase, <es name=excited_05 nonBlocking='true'/> and I will be more happy!") //, callback)
+            play_sound("showing_coin")
+            
             this.show_only("curiosity")
           }
           if (!en_visible && !mo_visible && cu_visible){
