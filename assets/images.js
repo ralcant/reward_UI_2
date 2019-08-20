@@ -1,5 +1,8 @@
 const images = {
     "energy":{
+        "coin":{
+            source: require('./jibocoin.png')
+        },
         "0":{
             text: require('./img/energy_texts/text_energy_0.png')
         },
@@ -36,6 +39,9 @@ const images = {
    
     },
     "mood":{
+        "coin":{
+            source: require('./jibocoin.png')
+        },
         "0": {
             text: require('./img/mood_texts/text_mood_0.png')
         },
@@ -72,6 +78,9 @@ const images = {
  
     },
     "curiosity":{
+        "coin":{
+            source: require('./jibocoin.png')
+        },
         "0": {
             text: require('./img/curiosity_texts/text_curiosity_0.png')
         },

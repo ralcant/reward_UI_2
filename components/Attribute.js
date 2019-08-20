@@ -38,9 +38,9 @@ export default class Attribute extends React.Component{
     componentDidMount(){
         console.log(`[ComponentDidMount in Attribute.js] this.state.width is ${this.state.width_bar._value}`)
         this.animateTo(0, this.props.value, this.state.width_bar);
-        if (this.state.width_bar._value ===0){
-            // console.log("IT'S O :((((((((((((((((((((((((((((((")
-        }
+        // if (this.state.width_bar._value ===0){
+        //     // console.log("IT'S O  :((((((((((((((((((((((((((((((")
+        // }
     }
 
     decreaseWidth = (decrease)=>{
@@ -58,7 +58,6 @@ export default class Attribute extends React.Component{
     }
     restartWidth = ()=>{
         // console.log(this.state.width_bar instanceof Animated.Value)
-        // this.decreaseWidth(0)
         Animated.timing(this.state.width_bar,{
             toValue: this.props.value,
             duration:1500,
@@ -71,22 +70,22 @@ export default class Attribute extends React.Component{
         // }).start();
         // this.animateTo(0,0, this.state.width_bar)
     }
-    colorSelector = (value)=>{
-        if (0 <= value && value < 4 ){
-            return "#ff3641"
+    // colorSelector = (value)=>{
+    //     if (0 <= value && value < 4 ){
+    //         return "#ff3641"
 
-            // return "#DA291CFF"
-        }
-        if (4 <= value && value < 7){
-            return "#FF4500"
-        }
-        if (7 <= value && value <= 10){
-            return "#53A567FF"
-        }
-        else{
-            console.log("[color selector in Attribute.js] This shouldn't happen. Remember, energy, mood and curiosity should be in the interval [0,10]")
-        }
-    }
+    //         // return "#DA291CFF"
+    //     }
+    //     if (4 <= value && value < 7){
+    //         return "#FF4500"
+    //     }
+    //     if (7 <= value && value <= 10){
+    //         return "#53A567FF"
+    //     }
+    //     else{
+    //         console.log("[color selector in Attribute.js] This shouldn't happen. Remember, energy, mood and curiosity should be in the interval [0,10]")
+    //     }
+    // }
     // changeOpacity = (value)=>{
     //     this.setState({
     //         opacity: value
@@ -112,8 +111,7 @@ export default class Attribute extends React.Component{
             right: this.state.width_bar,
             marginRight:10,
         }
-        let table_image = require('../assets/img/test.jpg')
-        let image_source= require('../assets/jibocoin.png');
+        let image_source= images[this.type].coin.source 
 
         let {label} = this.props.info;
         let text_image= images[this.type][label].text;

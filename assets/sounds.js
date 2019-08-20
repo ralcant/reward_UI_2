@@ -45,5 +45,8 @@ export let sounds = {
     },
     "coin_release":{
         source: require('./sounds/coin_release_3.mp3')
+    },
+    "intro":{
+        source: require('./sounds/intro.mp3')
     }
 }

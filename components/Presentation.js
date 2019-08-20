@@ -16,6 +16,7 @@ export default class Presentation extends React.Component{
             mood_visible: true,
             curiosity_visible: true,
         }
+        this.client= this.props.client
         this.changeOpacity= this.changeOpacity.bind(this)
     }
     visibleSwipe = (visible) =>{
@@ -25,14 +26,7 @@ export default class Presentation extends React.Component{
             })
         }
     }
-    async changeOpacity(type){
-        // await Sounds.name.source.playAsync()
-
-        // state_type = `${type}_hidden`
-        // console.log(state_type)
-        // this.setState({
-        //     [state_type]: !this.state[state_type]
-        // })
+    changeOpacity(type){
         switch(type){
             case "energy":{
                 this.setState({
@@ -149,8 +143,6 @@ export default class Presentation extends React.Component{
     }
 }
 
-// const screen = Dimensions.get('screen')
-// console.log(screen)
 console.log(`(width, height) is ${wp(100)}, ${hp(100)}`)
 const swipe_icon_percentange = 30; 
 const styles =StyleSheet.create({
