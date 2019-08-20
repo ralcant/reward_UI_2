@@ -71,14 +71,7 @@ export default class Coin extends React.Component{
         });
         this.pan.setValue({x: 0, y: 0});
         this.state.scale.setValue(increasing_scale);
-        this.props.changeOpacity(this.props.type)
-
-
-        // let song2 = require('../assets/sounds/test.wav')
-
-        // play_audio(this.soundObject, song2)
-
-        // this.props.visibleSwipe(false)
+        this.props.show_only(this.props.type)
     }
     handleOnResponderMove = (e, gesture)=>{
         // this.props.decreaseWidth(gesture.dx)
@@ -90,7 +83,7 @@ export default class Coin extends React.Component{
         Animated.event([null, {dx: this.pan.x, dy: this.pan.y}])(e, gesture); //uf you call it on if(gesture.dx >0), it will only move to the right
 
         if (gesture.dx >0){
-            // this.playSound('coin_compressing')
+            // play_sound('coin_compressing')
             this.props.decreaseWidth(gesture.dx)
             this.props.visibleSwipe(false) //if it's going to the right, it won't show it
         }else{
@@ -153,8 +146,8 @@ export default class Coin extends React.Component{
             }).start(async() =>{
                 this.props.updateAttribute(this.props.type)
                 //maybe get out of the app instead of just deleting?
-                await sleep(2000) //xso that the change of the type is visible
-                this.props.removeItem() //sets visibility to false, and then the the three being false makes eveyrhting dissapear
+                // await sleep(2000) //xso that the change of the type is visible
+                // this.props.removeItem() //sets visibility to false, and then the the three being false makes eveyrhting dissapear
             })
         }
     }
@@ -179,21 +172,36 @@ export default class Coin extends React.Component{
         // console.log(this.pan)
         // const transform = [...this.pan.getTranslateTransform()];
         // console.log(transform)
-        return(
-            <Animated.Image 
-            style={[
-                this.props.style,width_bar,
-                {transform:[
-                    {translateX: this.pan.x},
-                    {scale:this.state.scale}
-                ]},
-                styles.coin
-            ]}
-            source= {this.props.image_source}                          
-            {...this.panResponder.panHandlers}
-  
-        />
-        )
+        // let x_tranform = this.props.movable?{translateX: this.pan.x}: {}
+        if (this.props.movable){
+            return(
+                this.props.coin_visible &&
+                <Animated.Image 
+                style={[
+                    width_bar,
+                    {transform:[
+                        {translateX: this.pan.x},
+                        {scale:this.state.scale}
+                    ]},
+                    styles.coin
+                ]}
+                source= {this.props.image_source}                          
+                {...this.panResponder.panHandlers}
+      
+            />
+            )
+        } else{
+            return(
+                 this.props.coin_visible &&
+                <Animated.Image
+                style={[
+                    width_bar,
+                    styles.coin,
+                ]}
+                source={this.props.image_source}
+                />
+            )
+        }
     }
 }
 

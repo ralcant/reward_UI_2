@@ -25,7 +25,7 @@ export default class App extends React.Component {
       is_first: false,
     }
 
-
+    this.change_first= this.change_first.bind(this)
 
     /*Necessary here because we are passing this.client in Presentation.js*/ 
     this.client = new RosClient()
@@ -61,6 +61,12 @@ export default class App extends React.Component {
       }
     }
   }
+  change_first =()=>{
+    //change it from the database!
+    this.setState({
+      is_first: false,
+    })
+  }
   render(){
     // <View style={styles.container}>
       {/* // <PanGestureHandler> */}
@@ -79,6 +85,7 @@ export default class App extends React.Component {
           updateAttribute={this.updateAttribute}
           client={this.client}
           is_first={this.state.is_first}
+          change_first={this.change_first}
           />
         </LinearGradient>
       // </PanGestureHandler>

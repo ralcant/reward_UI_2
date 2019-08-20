@@ -103,24 +103,27 @@ export default class Attribute extends React.Component{
             // borderBottomRightRadius: 4,
             // flex:1,
         }
-        let opacity_style = {
-            opacity: this.props.is_visible? 1: 0//this.state.opacity,
-        }
-        const text_width ={ //USE IT IF YOU WANT TO MOVE THE TEXT BELOW THE COIN (don't forget to disable rigth:0 from styles.text)
-            //should make it a fixed distance from the end of the bar?
-            right: this.state.width_bar,
-            marginRight:10,
-        }
+        let coin_visible = this.props.is_visible && this.props.show_coin
+        // const text_width ={ //USE IT IF YOU WANT TO MOVE THE TEXT BELOW THE COIN (don't forget to disable rigth:0 from styles.text)
+        //     //should make it a fixed distance from the end of the bar?
+        //     right: this.state.width_bar,
+        //     marginRight:10,
+        // }
         let image_source= images[this.type].coin.source 
 
         let {label} = this.props.info;
         let text_image= images[this.type][label].text;
-        let opacity_style_2={
+        let container_opacity_style={
             opacity: this.props.is_visible? 1:0.5
         }
 
+        /*
+        Possible States of the coin/table:
+        -Coin and table opacity = 0.5 --> Happens when 
+        */
+
         return(
-            <View style={[opacity_style_2, styles.attribute_container]}>
+            <View style={[container_opacity_style, styles.attribute_container]}>
                 {/* <Animated.View>
                     <CurvedRectangle info={{width: this.state.width_bar}} style={[styles.table]} />
                 </Animated.View> */}
@@ -131,7 +134,7 @@ export default class Attribute extends React.Component{
                     style={[styles.table, widthStyle]}
                 />   */}
                 <Coin
-                    style={opacity_style}
+                    coin_visible={coin_visible}
                     image_source={image_source}
                     value={this.props.value}
                     decreaseWidth={this.decreaseWidth}
@@ -140,9 +143,11 @@ export default class Attribute extends React.Component{
                     type={this.type}
                     visibleSwipe={this.props.visibleSwipe}
                     animateTo={this.animateTo}
-                    changeOpacity={this.props.changeOpacity}
+                    show_only={this.props.show_only}
                     restartOpacity={this.props.restartOpacity}
-                    removeItem={this.props.removeItem}
+                    // removeItem={this.props.removeItem}
+
+                    movable={this.props.movable}
                 />
                 <Animated.Image
                     style={[styles.text]}
