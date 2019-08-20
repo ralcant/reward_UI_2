@@ -1,58 +1,49 @@
-
-import { Audio } from 'expo-av';
-
-// // export default class Sound{
-// //     constructor(path){
-// //         this.sound = new Audio.Sound()
-// //         this.sound.loadAsync(require(path))
-// //     }
-// //     play= ()=>{
-// //         this.sound.playAsync()
-// //     }
-
-// // }
+var Sound = require('react-native-sound');
 
 
-
-
-
-
-
-// // export default Sound
-
-// export const Sounds = {
-//     "name":{
-//         "source": load_sound(require('./sounds/test.wav'))
-//     }
-// }
-
-// async function load_sound(path){
-//     let new_sound = new Audio.Sound()
-//     try {
-//         await new_sound.loadAsync(path)
-//         await soundObject.playAsync();
-
-//         return new_sound
-        
-//     } catch(error){
-//         console.log("saaaaaaaaaaaaaaaaaad")
-//     }
-// }
-
-
-export async function play_audio(soundObject, path){
-
-    let soundObject2 = new Audio.Sound()
-    try {
-        await soundObject2.loadAsync(path);
-  
-        await soundObject2.playAsync();
-        // Your sound is playing!
-    } catch (error) {
-        // An error occurred!
-        console.log(error)
-        // console.log("nothing to play :(((((((((((((((((((((((((((((((((")
+export function play_sound(song_name, volume){
+    if (!volume){
+        volume = 1
     }
+    let song = sounds[song_name].source
+    const callback = (error, sound) =>{
+        if (error){
+            console.log("There was a problem uploading the audio")
+            return;
+        }
+        console.log(`${song_name} sound succesfuly loaded`)
+        console.log(volume)
+        sound.setVolume(volume)
+        sound.play(()=>{
+
+            //release it when it's done so we're not using up resources
+            // sound.release()
+        })
+    }
+    const sound = new Sound(song, error => callback(error, sound))
+
+    return sound
 }
 
-// module.export = play_audio;
+export function sound_loop(song_name){
+    let sound = play_sound(song_name)
+    sound.setNumberOfLoops(-1);
+}
+
+export let sounds = {
+    "test2":{
+        source: require('./sounds/test2.mp3')
+    },
+    "coin_picked":{
+        source: require('./sounds/test.wav')
+    },
+    "coin_back_to_normal":{
+        source: require('./sounds/coin_back_to_normal.mp3')
+    },
+    "coin_compressing":{
+        source: require('./sounds/coin_compressing.mp3')
+    },
+    "coin_release":{
+        source: require('./sounds/coin_release_3.mp3')
+    }
+}

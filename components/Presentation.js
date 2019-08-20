@@ -4,7 +4,8 @@ import Attribute from "./Attribute.js"
 import floatConversion from './floatConversion.js'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 // import {Sounds} from '../assets/sounds.js'
-
+// var Sound = require('react-native-sound');
+// import {playSound} from './sounds.js'
 
 export default class Presentation extends React.Component{
     constructor(props){
@@ -98,7 +99,7 @@ export default class Presentation extends React.Component{
                 <View style={styles.container} maxPointers={-1}>
                     {
                     this.state.showSwipe &&
-                    <Image source={swipe_image} style={[{opacity:2},styles.swipe_icon]}/>
+                    <Image source={swipe_image} style={[styles.swipe_icon]}/>
                     }
                     <View style={[style_condition, {flex:1}]}>
                         <Attribute

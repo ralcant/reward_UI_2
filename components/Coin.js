@@ -4,10 +4,12 @@ import {Animated, Text,Image, Easing, StyleSheet, Dimensions, PanResponder, Touc
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import {sleep} from './sleep.js'
 // import {Audio} from 'expo-av'
-import {play_audio} from '../assets/sounds.js'
+// import {play_audio} from '../assets/sounds.js'
 
 // const {width} = Dimensions.get('window')
 // console.log(width)
+import {play_sound, sound_loop} from '../assets/sounds.js'
+
 export default class Coin extends React.Component{
     constructor(props){
         super(props);
@@ -19,7 +21,8 @@ export default class Coin extends React.Component{
         this.props.animateTo(0, this.props.value, this.state.width_bar);
         this.pan = new Animated.ValueXY()
         this.handlePanResponder()
-        this.soundObject = new Audio.Sound()
+        // this.soundObject = new Audio.Sound()
+        // this.handleOnResponderMove = this.handleOnResponderMove.bind(this);
     }
     handlePanResponder = ()=>{
         this._val = { x:0, y:0}
@@ -44,7 +47,6 @@ export default class Coin extends React.Component{
     }
     handleShouldSetOnStart= (e, gesture)=>{
         return this.state.is_responder // so that it cannot be 
-        console.log("AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH")
         if (gesture.numberActiveTouches >=2){
             return false
         }
@@ -61,6 +63,7 @@ export default class Coin extends React.Component{
         // return gesture.dx > 15 && gesture.dx <30
     }
     handleOnResponderGrant = (e, gesture) =>{
+        // sound_loop("coin_picked")
         console.log("granted!")
         this.pan.setOffset({
             x: this._val.x,
@@ -77,28 +80,29 @@ export default class Coin extends React.Component{
 
         // this.props.visibleSwipe(false)
     }
-    handleOnResponderMove = (e, gesture) =>{
+    handleOnResponderMove = (e, gesture)=>{
         // this.props.decreaseWidth(gesture.dx)
         // console.log(gesture)
         // console.log("this is moving")
-        if (gesture.numberActiveTouches <= 1){
+        // if (gesture.numberActiveTouches <= 1){
             // console.log("AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH")
                     //only if the gesture is to the rigth, decrease the width of the bar}
-            Animated.event([null, {dx: this.pan.x, dy: this.pan.y}])(e, gesture); //uf you call it on if(gesture.dx >0), it will only move to the right
+        Animated.event([null, {dx: this.pan.x, dy: this.pan.y}])(e, gesture); //uf you call it on if(gesture.dx >0), it will only move to the right
 
-            if (gesture.dx >0){
-                this.props.decreaseWidth(gesture.dx)
-                this.props.visibleSwipe(false) //if it's going to the right, it won't show it
-            }else{
-                this.props.visibleSwipe(true) //if it's going to the left (or same place) it will show it 
-            }
+        if (gesture.dx >0){
+            // this.playSound('coin_compressing')
+            this.props.decreaseWidth(gesture.dx)
+            this.props.visibleSwipe(false) //if it's going to the right, it won't show it
         }else{
-            this.setState({
-                is_responder: false
-            }, ()=>{
-                this.handlePanResponder()
-            })
+            this.props.visibleSwipe(true) //if it's going to the left (or same place) it will show it 
         }
+        // }else{
+        //     this.setState({
+        //         is_responder: false
+        //     }, ()=>{
+        //         this.handlePanResponder()
+        //     })
+        // }
 
 
 
@@ -119,6 +123,7 @@ export default class Coin extends React.Component{
         if (gesture.dx < 0){
             //going back to original state
             // this.props.changeOpacity(0.5)
+            play_sound('coin_back_to_normal')
             this.props.restartOpacity() 
 
             Animated.parallel([
@@ -135,6 +140,7 @@ export default class Coin extends React.Component{
 
         } else{
             // console.log(gesture)
+            play_sound('coin_release', volume=4)
             this.setState({
                 is_responder: false //once it's moving, you cannot stop it!
             })
@@ -147,7 +153,7 @@ export default class Coin extends React.Component{
             }).start(async() =>{
                 this.props.updateAttribute(this.props.type)
                 //maybe get out of the app instead of just deleting?
-                await sleep(2000) //so that the change of the type is visible
+                await sleep(2000) //xso that the change of the type is visible
                 this.props.removeItem() //sets visibility to false, and then the the three being false makes eveyrhting dissapear
             })
         }
