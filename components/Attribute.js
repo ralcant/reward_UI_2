@@ -1,7 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, Animated, Dimensions, Easing } from 'react-native';
 import Coin from './Coin.js'
-// import Swipeable from 'react-native-swipeable';
 import images from "../assets/images.js"
 import CurvedRectangle from './CurvedRectangle.js'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
@@ -10,24 +9,21 @@ import sleep from './sleep.js'
 export default class Attribute extends React.Component{
     constructor(props){
         super(props);
-        this.initial = props.value;
+        this.initial = props.value; //maximun width
         this.state={
             width_bar: new Animated.Value(0),
-            opacity: 0.5,
         }
         this.type = this.props.info.type;  //"energy", "mood" or "curiosity"
-        this.animateTo(0, this.props.value, this.state.width_bar);
-
+        this.animateTo(0, this.props.value, this.state.width_bar); //increasing the width up to certain value
 
     }
     componentDidUpdate = ()=>{
         if (this.props.value !== this.initial){
-            //so that this.state.width_bar is always on sync with this.props.value
+            //so that this.state.width_bar is always on sync with this.props.value (particulary special for when the coin is been dragged out of the screen)
             this.animateTo(0, this.props.value, this.state.width_bar)
         }
     }
     animateTo = (delay, value, animated) =>{
-        // this.type = this.props.info.type;
         Animated.timing(animated,{
             toValue: value,
             duration: 1000,
@@ -37,19 +33,15 @@ export default class Attribute extends React.Component{
     }
     componentDidMount(){
         console.log(`[ComponentDidMount in Attribute.js] this.state.width is ${this.state.width_bar._value}`)
-        this.animateTo(0, this.props.value, this.state.width_bar);
+        // this.animateTo(0, this.props.value, this.state.width_bar);
         // if (this.state.width_bar._value ===0){
         //     // console.log("IT'S O  :((((((((((((((((((((((((((((((")
         // }
     }
 
     decreaseWidth = (decrease)=>{
-        // let current_width = this.state.width_bar;
-        // console.log(current_width)
-        // console.log(current_width instanceof Animated.Value, decreaseAnimated instanceof Animated.Value)
-
-        this.setState((prevState) => {
-            //result needs to be an Animated.Value object
+        this.setState(() => {
+            //result needs to be an Animated.Value object for Animated.timing({toValue:...}) to work
             let result = new Animated.Value(this.props.value-decrease);
             return {
                 width_bar: result,
@@ -57,58 +49,26 @@ export default class Attribute extends React.Component{
         })
     }
     restartWidth = ()=>{
-        // console.log(this.state.width_bar instanceof Animated.Value)
         Animated.timing(this.state.width_bar,{
             toValue: this.props.value,
             duration:1500,
             easing: Easing.bounce,
         }).start();
-        // Animated.spring(this.state.width_bar,{
-        //     friction:3,
-        //     toValue: this.props.value,
-        //     // duration:1000,
-        // }).start();
-        // this.animateTo(0,0, this.state.width_bar)
     }
-    // colorSelector = (value)=>{
-    //     if (0 <= value && value < 4 ){
-    //         return "#ff3641"
-
-    //         // return "#DA291CFF"
-    //     }
-    //     if (4 <= value && value < 7){
-    //         return "#FF4500"
-    //     }
-    //     if (7 <= value && value <= 10){
-    //         return "#53A567FF"
-    //     }
-    //     else{
-    //         console.log("[color selector in Attribute.js] This shouldn't happen. Remember, energy, mood and curiosity should be in the interval [0,10]")
-    //     }
-    // }
-    // changeOpacity = (value)=>{
-    //     this.setState({
-    //         opacity: value
-    //     })
-    // }
     render(){
 
         // console.log(`[render Attribute.js]: this.state.width is ${this.state.width_bar instanceof Animated.Value} Animated.Value`)
         let table_color = '#ffcd03' //this.colorSelector(this.props.info.label)
-        const widthStyle={
-            backgroundColor: table_color,
-            width: this.state.width_bar,
-            // right:0,
-            // borderTopLeftRadius: 4,
-            // borderBottomRightRadius: 4,
-            // flex:1,
-        }
-        let coin_visible = this.props.is_visible && this.props.show_coin
-        // const text_width ={ //USE IT IF YOU WANT TO MOVE THE TEXT BELOW THE COIN (don't forget to disable rigth:0 from styles.text)
-        //     //should make it a fixed distance from the end of the bar?
-        //     right: this.state.width_bar,
-        //     marginRight:10,
+        // const widthStyle={
+        //     backgroundColor: table_color,
+        //     width: this.state.width_bar,
+        //     // right:0,
+        //     // borderTopLeftRadius: 4,
+        //     // borderBottomRightRadius: 4,
+        //     // flex:1,
         // }
+        let coin_visible = this.props.is_visible && this.props.show_coin //coin will be visible only if show_coin is true and if the parent is visible
+
         let image_source= images[this.type].coin.source 
 
         let {label} = this.props.info;
@@ -124,15 +84,7 @@ export default class Attribute extends React.Component{
 
         return(
             <View style={[container_opacity_style, styles.attribute_container]}>
-                {/* <Animated.View>
-                    <CurvedRectangle info={{width: this.state.width_bar}} style={[styles.table]} />
-                </Animated.View> */}
                 <CurvedRectangle info={{width: this.state.width_bar, color: table_color, label: label}}/>
-
-                {/* <Animated.Image
-                    source={table_image}
-                    style={[styles.table, widthStyle]}
-                />   */}
                 <Coin
                     coin_visible={coin_visible}
                     image_source={image_source}
@@ -159,7 +111,6 @@ export default class Attribute extends React.Component{
     }
 }
 
-// const screen = Dimensions.get('screen')
 const radio_bar = 1/5;
 
 const styles= StyleSheet.create({

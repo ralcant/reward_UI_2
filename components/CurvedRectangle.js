@@ -14,28 +14,19 @@ export default class CurvedRectangle extends React.Component{
         }
         return result
     }
-    componentDidMount(){
-        if (this.props.info.width._value === 0){
-            console.log("this is a bug :(")
-        }
-    }
     render(){
         let {width, color, label} = this.props.info
         let number_divisions = label
         // let individual_width = width._value/number_divisions;
         // let borderRadius = Math.sqrt(individual_width*individual_width+screen.height*radio_bar*screen.height*radio_bar)/2 
-        let borderRadius = hp(100)*radio_bar/2; //half of the height
-        // let borderRadius =  width._value/2
-        let general_style = {
+        let borderRadius = hp(100)*radio_bar/2; //half of the height //TODO: play with different types of borderRadius and see how they look on screen
+        let general_child_style = {
             backgroundColor: color,
             borderRadius: borderRadius,
-            // opacity: 0.5,
-            // borderTopRightRadius: borderRadius,
-            // borderBottomRightRadius: borderRadius,
         } 
         return(
             <Animated.View style={[{width: width},styles.container]}>
-                {this.getAnimatedViews(number_divisions, general_style)}
+                {this.getAnimatedViews(number_divisions, general_child_style)}
             </Animated.View>
         )
     }
@@ -51,7 +42,6 @@ const styles= StyleSheet.create({
         height:hp(100)*radio_bar,
         // borderColor: "blue",
         // borderWidth:10,
-        // flex:0.5,
     },
     single:{
         flex:1,

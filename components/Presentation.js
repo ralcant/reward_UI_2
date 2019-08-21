@@ -13,35 +13,37 @@ export default class Presentation extends React.Component{
         this.state={
             showSwipe: null,
 
-            movable: null,
+            movable: null, //see if the coins presented are swipeable, or just static images.
+
             /*
             -If it's not the first interaction, show all the coins from the beginning!
             -If it's the first interaction, then at FIRST don't show any coins (this changes to true after being first mounted!)
             */ 
-            show_coin: !props.is_first, 
-
-            //using props instead of this.props will prevent them from updating when is_first changes, which is good
+            show_coin: !props.is_first, //using props instead of this.props will prevent them from updating when is_first changes, which is good
+                                 
+            /*
+            Takes care of the whole component
+            */
             energy_visible: true,
             mood_visible: true,
             curiosity_visible: true,
 
         }
         console.log(this.state.energy_visible, this.state.mood_visible, this.state.curiosity_visible)
-        this.client= this.props.client
+        this.client= this.props.client //using the jibo Client previously created to make Jibo talk
         this.show_only= this.show_only.bind(this)
     }
     async componentDidMount(){
         if (!this.props.is_first){
             //say general openings!
+            //TODO: randomize election of the script
             await this.client.send_robot_tts_cmd("oh hello")
 
+            //after Jibo finishes, the coins become movable and the swipe sign appears
             this.setState({
                 showSwipe: true,
-                movable: true,
-                energy_visible: true,
-                mood_visible: true,
-                curiosity_visible: true,
-
+                movable: true,   
+                
                 show_coin: true,
             })
         }else{
@@ -52,6 +54,7 @@ export default class Presentation extends React.Component{
             this.setState({
                 showSwipe: false,
                 movable: false,
+
                 energy_visible: false,
                 mood_visible: false,
                 curiosity_visible: false,
@@ -65,25 +68,21 @@ export default class Presentation extends React.Component{
         let en_visible= this.state.energy_visible;
         let mo_visible = this.state.mood_visible;
         let cu_visible = this.state.curiosity_visible;
-        // console.log('States now: (energy, mood, curiosity)',en_visible, mo_visible,cu_visible);
         if (this.props.is_first){
           if (!en_visible && !mo_visible && !cu_visible){
-            //make Jibo talk, don't call this.setState until AFTER jibo finished talking  
-            console.log("into first if")
+            console.log("[Presentation.js in componentDidUpdate()]: into first if")
             play_sound("showing_coin")
             this.show_only("energy")
           } 
           if (en_visible && !mo_visible && !cu_visible){
-            //make Jibo talk, don't call this.setState until AFTER jibo finished talking
-            console.log("into second if!")
+            console.log("[Presentation.js in componentDidUpdate()]: into second if!")
             await this.client.send_robot_tts_cmd("If you drag it to the ENERGY bucket, <es name=Emoji_Battery nonBlocking='true'/> my energy will increase. Also, <break size='0.7'/> <es name=excited_05 nonBlocking='true'/>I will be more awake and ready to play with you!"); 
             play_sound("showing_coin")
             
             this.show_only("mood")
           }
           if (!en_visible && mo_visible && !cu_visible){
-            //make Jibo talk, don't call this.setState until AFTER jibo finished talking
-            console.log("into third if")
+            console.log("[Presentation.js in componentDidUpdate()]: into third if")
             await this.client.send_robot_tts_cmd("On the other hand, if you drag it to the MOOD bucket, my mood will increase, <es name=excited_05 nonBlocking='true'/> and I will be more happy!") //, callback)
             play_sound("showing_coin")
             
@@ -135,6 +134,9 @@ export default class Presentation extends React.Component{
                 })
                 break;
             }
+            default:{
+                console.log("This shouldn't happen")
+            }
 
         }
     }
@@ -156,8 +158,9 @@ export default class Presentation extends React.Component{
     width_bar = (level) =>{
 
         /*
-        You can customize the level for each level 0, 1, 2,..., 9, 10 
-        Useful if level 1 is too short! or level 10 is too large D:
+        -Bear in mind the [level] is an integer from 0 to 10.
+        -You can customize the level for each level 0, 1, 2,..., 9, 10 
+        -Useful if level 1 is too short! or level 10 is too large D:
         */
 
         return level* wp(100/15)
@@ -170,7 +173,6 @@ export default class Presentation extends React.Component{
         let mood_integer_level= floatConversion(mood);
         let curiosity_integer_level= floatConversion(curiosity);
 
-        //bear in mind the integer_levels are integers from 0 to 10.
         let energy_bar_width = this.width_bar(energy_integer_level)
         let mood_bar_width = this.width_bar(mood_integer_level);
         let curiosity_bar_width = this.width_bar(curiosity_integer_level);
