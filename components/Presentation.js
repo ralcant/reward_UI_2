@@ -19,7 +19,7 @@ export default class Presentation extends React.Component{
             -If it's not the first interaction, show all the coins from the beginning!
             -If it's the first interaction, then at FIRST don't show any coins (this changes to true after being first mounted!)
             */ 
-            show_coin: !props.is_first, //using props instead of this.props will prevent them from updating when is_first changes, which is good
+            show_coin_at_first: !props.is_first, //using props instead of this.props will prevent them from updating when is_first changes, which is good
                                  
             /*
             Takes care of the whole component
@@ -32,6 +32,7 @@ export default class Presentation extends React.Component{
         console.log(this.state.energy_visible, this.state.mood_visible, this.state.curiosity_visible)
         this.client= this.props.client //using the jibo Client previously created to make Jibo talk
         this.show_only= this.show_only.bind(this)
+        this.jibo_rewarded= this.jibo_rewarded.bind(this)
     }
     async componentDidMount(){
         if (!this.props.is_first){
@@ -44,7 +45,7 @@ export default class Presentation extends React.Component{
                 showSwipe: true,
                 movable: true,   
                 
-                show_coin: true,
+                show_coin_at_first: true,
             })
         }else{
             //say introduction opening!
@@ -59,7 +60,7 @@ export default class Presentation extends React.Component{
                 mood_visible: false,
                 curiosity_visible: false,
 
-                show_coin: true,
+                show_coin_at_first: true,
                 
             })
         }
@@ -135,7 +136,7 @@ export default class Presentation extends React.Component{
                 break;
             }
             default:{
-                console.log("This shouldn't happen")
+                console.log(`[show_only] Received the type ${type} when it was expected one of {energy, mood, curiosity}`)
             }
 
         }
@@ -164,6 +165,26 @@ export default class Presentation extends React.Component{
         */
 
         return level* wp(100/15)
+    }
+
+    async jibo_rewarded(type){
+        switch(type){
+            case "energy":{
+                this.client.send_robot_tts_cmd("I feel more energetic now! Thank you! I think I'll be awake all night.<es name=eye_happy_out_01/><es name=dance_funny_01/>Just kidding, I also need to sleep.");  
+                break;
+            }
+            case "mood":{
+                this.client.send_robot_tts_cmd("I feel happier now! Thank you! I think I'm going to dance.<es name=dance_funny_00/> How was my dance? I bet you can do it too! ");  
+                break;
+            }
+            case "curiosity":{
+                this.client.send_robot_tts_cmd("Now I have even more questions on mind! Why is the sky blue? Why is my name pronounced Jibo and no <phoneme ph='dj iy b o'>Jibo</phoneme>?");      
+                break;
+            }
+            default:{
+                console.log(`[jibo_rewarded] Received the type ${type} when it was expected one of {energy, mood, curiosity}`)
+            }
+        }
     }
     render(){
         let {energy, mood, curiosity} = this.props.values;
@@ -201,8 +222,9 @@ export default class Presentation extends React.Component{
                         restartOpacity={this.restartOpacity}
                         // style_condition={style_condition}
 
-                        show_coin={this.state.show_coin}
+                        show_coin_at_first={this.state.show_coin_at_first}
                         movable={this.state.movable}
+                        jibo_rewarded={this.jibo_rewarded}
                         />
                         <Attribute
                         value={mood_bar_width} 
@@ -216,8 +238,10 @@ export default class Presentation extends React.Component{
                         // style_condition={style_condition}
                         // removeItem={this.removeItem}
 
-                        show_coin={this.state.show_coin}
+                        show_coin_at_first={this.state.show_coin_at_first}
                         movable={this.state.movable}
+                        jibo_rewarded={this.jibo_rewarded}
+
 
                         />
                         <Attribute
@@ -232,8 +256,9 @@ export default class Presentation extends React.Component{
                         // style_condition={style_condition}
                         // removeItem={this.removeItem}
 
-                        show_coin={this.state.show_coin}
+                        show_coin_at_first={this.state.show_coin_at_first}
                         movable={this.state.movable}
+                        jibo_rewarded={this.jibo_rewarded}
 
                         />
                     </View>

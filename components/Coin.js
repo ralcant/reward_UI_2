@@ -112,6 +112,8 @@ export default class Coin extends React.Component{
             // easing: Easing.bounce,
             }).start(() =>{
                 this.props.updateAttribute(this.props.type)
+                //TODO: trigger Jibo's screen response and script
+                this.props.jibo_rewarded(this.props.type)
                 //maybe get out of the app instead of just deleting?
                 // await sleep(2000) //xso that the change of the type is visible
                 // this.props.removeItem() //sets visibility to false, and then the the three being false makes eveyrhting dissapear
@@ -143,7 +145,7 @@ export default class Coin extends React.Component{
             )
         } else{
             return(
-                 this.props.coin_visible &&
+                this.props.coin_visible &&
                 <Animated.Image
                 style={[
                     width_bar,

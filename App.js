@@ -22,7 +22,7 @@ export default class App extends React.Component {
       mood: 6.1,
       curiosity: 9,
 
-      is_first: false,
+      is_first: true,
     }
 
     this.change_first= this.change_first.bind(this)

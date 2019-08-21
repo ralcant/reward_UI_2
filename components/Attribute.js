@@ -67,7 +67,9 @@ export default class Attribute extends React.Component{
         //     // borderBottomRightRadius: 4,
         //     // flex:1,
         // }
-        let coin_visible = this.props.is_visible && this.props.show_coin //coin will be visible only if show_coin is true and if the parent is visible
+        
+        //this.props.show_coin_at_first will be true in all escenarios but one: When is the first interaction (and is starting the tutorial)
+        let coin_visible = this.props.is_visible && this.props.show_coin_at_first 
 
         let image_source= images[this.type].coin.source 
 
@@ -84,7 +86,7 @@ export default class Attribute extends React.Component{
 
         return(
             <View style={[container_opacity_style, styles.attribute_container]}>
-                <CurvedRectangle info={{width: this.state.width_bar, color: table_color, label: label}}/>
+                <CurvedRectangle info={{width: this.state.width_bar, color: table_color, label: label}}/> 
                 <Coin
                     coin_visible={coin_visible}
                     image_source={image_source}
@@ -99,6 +101,7 @@ export default class Attribute extends React.Component{
                     restartOpacity={this.props.restartOpacity}
                     // removeItem={this.props.removeItem}
 
+                    jibo_rewarded ={this.props.jibo_rewarded}
                     movable={this.props.movable}
                 />
                 <Animated.Image
