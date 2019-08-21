@@ -170,14 +170,17 @@ export default class Presentation extends React.Component{
     async jibo_rewarded(type){
         switch(type){
             case "energy":{
+                //TODO: SHOW COIN ANIMATION IN JIBO'S SCREEN
                 this.client.send_robot_tts_cmd("I feel more energetic now! Thank you! I think I'll be awake all night.<es name=eye_happy_out_01/><es name=dance_funny_01/>Just kidding, I also need to sleep.");  
                 break;
             }
             case "mood":{
+                //TODO: SHOW COIN ANIMATION IN JIBO'S SCREEN
                 this.client.send_robot_tts_cmd("I feel happier now! Thank you! I think I'm going to dance.<es name=dance_funny_00/> How was my dance? I bet you can do it too! ");  
                 break;
             }
             case "curiosity":{
+                //TODO: SHOW COIN ANIMATION IN JIBO'S SCREEN
                 this.client.send_robot_tts_cmd("Now I have even more questions on mind! Why is the sky blue? Why is my name pronounced Jibo and no <phoneme ph='dj iy b o'>Jibo</phoneme>?");      
                 break;
             }

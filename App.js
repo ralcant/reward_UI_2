@@ -22,7 +22,7 @@ export default class App extends React.Component {
       mood: 6.1,
       curiosity: 9,
 
-      is_first: true,
+      is_first: false,
     }
 
     this.change_first= this.change_first.bind(this)
@@ -72,12 +72,15 @@ export default class App extends React.Component {
       {/* // <PanGestureHandler> */}
       {/* // </PanGestureHandler> */}
     // </View>
+    color_gradient = ["#453a94","#f43b47"]
+    // color_gradient=["#FC0414", "#f43b47"]
+    // color_gradient= ["#04B0F9","#04B0F9"] //top, bottom
     return (
       // <PanGestureHandler
       // // maxPointers={2}
       // >
         <LinearGradient
-          colors={["#453a94","#f43b47"]}
+          colors={color_gradient}
           style={styles.container}
           >
           <Presentation

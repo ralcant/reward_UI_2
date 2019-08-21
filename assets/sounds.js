@@ -51,5 +51,8 @@ export let sounds = {
     },
     "showing_coin":{
         source: require('./sounds/showing_coin.wav') //TODO: FIND A GOOD SOUND FOR THIS
+    },
+    "increase_level":{
+        source: require('./sounds/increase_level_2.mp3')
     }
 }

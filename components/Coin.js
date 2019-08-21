@@ -112,6 +112,7 @@ export default class Coin extends React.Component{
             // easing: Easing.bounce,
             }).start(() =>{
                 this.props.updateAttribute(this.props.type)
+                play_sound("increase_level")
                 //TODO: trigger Jibo's screen response and script
                 this.props.jibo_rewarded(this.props.type)
                 //maybe get out of the app instead of just deleting?
